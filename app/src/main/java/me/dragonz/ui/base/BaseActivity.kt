@@ -18,7 +18,7 @@ import me.dragonz.utility.ActivityStackMgr
 
 abstract class BaseActivity : AppCompatActivity(){
 
-    private val mShowTitleBar: Boolean = false;
+    private val mShowTitleBar: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

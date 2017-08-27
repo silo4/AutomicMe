@@ -5,6 +5,10 @@ import me.dragonz.event.SysEventSets
 import me.dragonz.log.Logger
 import me.dragonz.module.exception.BaseModuleException
 import java.lang.reflect.Constructor
+import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
+import kotlin.reflect.full.createInstance
+import kotlin.reflect.full.primaryConstructor
 
 /**
  * 类名称: ModuleManager
@@ -20,20 +24,21 @@ class ModuleManager: IModuleCallback{
     private var mMapModules: HashMap<String, BaseModule> = HashMap()
     private var mInitedModuleCount = 0 //初始化过的模块数，当这个值等于mMapModule.size时，说明所有模块初始化完成
 
-    private fun register(moduleClass: Class<BaseModule>, callback: IModuleCallback){
+    private fun register(moduleClass: KClass<BaseModule>?, callback: IModuleCallback){
         try {
-            val constructor: Constructor<BaseModule> = moduleClass.getConstructor(moduleClass::class.java, callback::class.java)
-            val module = constructor.newInstance(moduleClass.simpleName, callback)
+            val module = moduleClass?.primaryConstructor?.call(moduleClass.simpleName, callback)
             if (module != null){
                 mMapModules.put(module.mModuleName, module)
                 module.init()
+            }else{
+                Logger.i("module to register is null ")
             }
         }catch (e: Exception){
             Logger.e(e.cause, e.message)
         }
     }
 
-    private fun unregister(moduleClass: Class<BaseModule>?){
+    private fun unregister(moduleClass: KClass<BaseModule>?){
         if (moduleClass == null){
             return
         }
@@ -48,12 +53,17 @@ class ModuleManager: IModuleCallback{
     }
 
     fun loadModules(){
-//        var bm: Class<BaseModule> = InitPreBootModule::class.java
-//        register(bm, this)
+//        val cls: KClass<InitPreBootModule> = InitPreBootModule::class
+//        val use: KClass<BaseModule>? = cls as? KClass<BaseModule>
+        register(InitPreBootModule::class as? KClass<BaseModule>, this)
+        register(BootModule::class as? KClass<BaseModule>, this)
+        register(InitAfterBootModule::class as? KClass<BaseModule>, this)
     }
 
     fun unloadModules(){
-//        unregister(InitAfterBootModule::class.java)
+        unregister(InitAfterBootModule::class as? KClass<BaseModule>)
+        unregister(BootModule::class as? KClass<BaseModule>)
+        unregister(InitPreBootModule::class as? KClass<BaseModule>)
     }
 
     private fun getModule(className: Class<BaseModule>): BaseModule?{

@@ -13,23 +13,25 @@ import me.dragonz.module.exception.EmptyModuleNameException
  * @version: 1.0.0
  */
 
-abstract class BaseModule{
+abstract class BaseModule constructor(moduleName: String, callback: IModuleCallback?){
     internal var mModuleName: String = ""
     internal var mCallback: IModuleCallback? = null
 
-    constructor(moduleName: String){
-        if (moduleName.isEmpty()){
-            throw EmptyModuleNameException("module name is empty")
-        }
-        mModuleName = moduleName
-    }
-
-    constructor(moduleName: String, callback: IModuleCallback){
+    //primary constructor
+    init {
         if (moduleName.isEmpty()){
             throw EmptyModuleNameException("module name is empty")
         }
         mModuleName = moduleName
         mCallback = callback
+    }
+
+    //secondary constructor
+    constructor(moduleName: String): this(moduleName, null){
+        if (moduleName.isEmpty()){
+            throw EmptyModuleNameException("module name is empty")
+        }
+        mModuleName = moduleName
     }
 
     abstract fun init()
