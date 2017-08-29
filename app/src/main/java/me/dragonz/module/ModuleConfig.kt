@@ -13,7 +13,9 @@ import kotlin.reflect.KClass
  */
 object ModuleConfig{
     val mModuleList: List< KClass<BaseModule>? >
-            = listOf(InitPreBootModule::class as? KClass<BaseModule>, BootModule::class as? KClass<BaseModule>, InitAfterBootModule::class as? KClass<BaseModule>)
+            = listOf(InitPreBootModule::class as? KClass<BaseModule>,
+                     BootModule::class as? KClass<BaseModule>,
+                     InitAfterBootModule::class as? KClass<BaseModule>)
 
     fun moduleSize(): Int = mModuleList.size
 }
