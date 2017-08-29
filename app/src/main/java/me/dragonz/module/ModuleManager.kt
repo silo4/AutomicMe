@@ -53,17 +53,17 @@ class ModuleManager: IModuleCallback{
     }
 
     fun loadModules(){
-//        val cls: KClass<InitPreBootModule> = InitPreBootModule::class
-//        val use: KClass<BaseModule>? = cls as? KClass<BaseModule>
-        register(InitPreBootModule::class as? KClass<BaseModule>, this)
-        register(BootModule::class as? KClass<BaseModule>, this)
-        register(InitAfterBootModule::class as? KClass<BaseModule>, this)
+        val moduleList: List< KClass<BaseModule>? >  = ModuleConfig.mModuleList
+        for ( moduleClass in moduleList){
+            register(moduleClass, this)
+        }
     }
 
     fun unloadModules(){
-        unregister(InitAfterBootModule::class as? KClass<BaseModule>)
-        unregister(BootModule::class as? KClass<BaseModule>)
-        unregister(InitPreBootModule::class as? KClass<BaseModule>)
+        val moduleList: List< KClass<BaseModule>? >  = ModuleConfig.mModuleList.reversed()
+        for ( moduleClass in moduleList){
+            unregister(moduleClass)
+        }
     }
 
     private fun getModule(className: Class<BaseModule>): BaseModule?{
@@ -73,7 +73,7 @@ class ModuleManager: IModuleCallback{
     override fun onInit(moduleName: String) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         mInitedModuleCount ++
-        if (mInitedModuleCount == mMapModules.size){
+        if (mInitedModuleCount == ModuleConfig.moduleSize()){
             Logger.i("all modules init completed")
             EventMgr.post(SysEventSets.MODULES_LOADED())
         }
@@ -82,7 +82,7 @@ class ModuleManager: IModuleCallback{
     override fun onUninit(moduleName: String) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         mInitedModuleCount --
-        if (mInitedModuleCount == mMapModules.size
+        if (mInitedModuleCount == ModuleConfig.moduleSize()
                 && mInitedModuleCount == 0){
             Logger.i("all modules uninit completed")
             EventMgr.post(SysEventSets.MODULES_UNLOADED())
