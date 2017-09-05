@@ -3,6 +3,7 @@ package me.dragonz.ui.base
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Window
+import me.dragonz.mvp.presenter.base.BasePresenter
 import me.dragonz.utility.ActivityStackMgr
 
 /**
@@ -19,6 +20,7 @@ import me.dragonz.utility.ActivityStackMgr
 abstract class BaseActivity : AppCompatActivity(){
 
     private val mShowTitleBar: Boolean = false
+    protected var mPresenter: BasePresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
     override fun onDestroy() {
         super.onDestroy()
+        mPresenter?.destroy()
     }
 
     override fun finish() {

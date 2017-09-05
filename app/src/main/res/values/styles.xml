@@ -8,4 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Launcher" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@style/LauncherAnimationStyle</item>
+    </style>
+
+    <style name="LauncherAnimationStyle">
+        <item name="android:activityOpenEnterAnimation">@anim/center_to_corner</item>
+    </style>
+
 </resources>
