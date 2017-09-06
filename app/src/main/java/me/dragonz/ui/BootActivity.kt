@@ -1,6 +1,8 @@
 package me.dragonz.ui
 
 import android.os.Bundle
+import android.view.animation.AnimationUtils
+import kotlinx.android.synthetic.main.activity_boot.*
 import me.dragonz.automicme.R
 import me.dragonz.log.Logger
 import me.dragonz.mvp.presenter.BootPresenterImpl
@@ -26,6 +28,7 @@ class BootActivity : BaseActivity(), IBootView {
     override fun bootWithImageAndCountDown() {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         Logger.i("boot with image and countdown")
+        tvContent.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_to_origin))
     }
 
     override fun bootWithVideo() {
