@@ -88,7 +88,7 @@ class ModuleManager: IModuleCallback{
 
     override fun onException(moduleName: String, exception: BaseModuleException) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        Logger.e("init module[${moduleName}] error[${exception.message}]")
+        Logger.e("init module[$moduleName] error[${exception.message}]")
         EventMgr.post(SysEventSets.MODULE_LOADING_ERROR(exception.message))
     }
 

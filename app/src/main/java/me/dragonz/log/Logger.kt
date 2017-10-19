@@ -143,7 +143,7 @@ class Logger {
 
         private fun buildMessage(content: String?): String{
             //todo sth
-            val msg: String = "[${mMethodName}:${mLineNumber}]${content}"
+            val msg = "[$mMethodName:$mLineNumber]$content"
             return msg
         }
 
